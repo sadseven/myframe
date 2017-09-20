@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -25,24 +26,22 @@ public final class DatabaseHelper {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseHelper.class);
 	private static final QueryRunner QUERY_RUNNER = new QueryRunner();
 	private static final ThreadLocal<Connection> CONNECTION_HOLDER = new ThreadLocal<Connection>();
-	
-	private static final String DRIVER;
-	private static final String URL;
-	private static final String USERNAME;
-	private static final String PASSWORD;
+	private static final BasicDataSource DATA_SOURCE;
+
 	
 	static {
 		Properties conf = PropsUtil.loadProps("config.properties");
-		DRIVER = conf.getProperty("jdbc.driver");
-		URL = conf.getProperty("jdbc.url");
-		USERNAME = conf.getProperty("jdbc.username");
-		PASSWORD = conf.getProperty("jdbc.password");
+		String driver = conf.getProperty("jdbc.driver");
+		String url = conf.getProperty("jdbc.url");
+		String username = conf.getProperty("jdbc.username");
+		String password = conf.getProperty("jdbc.password");
 		
-		try {
-			Class.forName(DRIVER);
-		} catch (ClassNotFoundException e) {
-			LOGGER.error("can not load jdbc driver", e);
-		}
+		DATA_SOURCE = new BasicDataSource();
+		DATA_SOURCE.setDriverClassName(driver);
+		DATA_SOURCE.setUrl(url);
+		DATA_SOURCE.setUsername(username);
+		DATA_SOURCE.setPassword(password);
+
 	}
 	
 	/**
@@ -53,7 +52,7 @@ public final class DatabaseHelper {
 		Connection conn = CONNECTION_HOLDER.get();
 		if (conn == null) {
 			try {
-				conn = DriverManager.getConnection(URL, USERNAME, PASSWORD); 
+				conn = DATA_SOURCE.getConnection(); 
 			} catch (SQLException e) {
 				LOGGER.error("get connection failure", e);
 				throw new RuntimeException(e);
@@ -62,24 +61,6 @@ public final class DatabaseHelper {
 			}
 		}
 		return conn;
-	}
-	
-	/**
-	 * 关闭数据库连接
-	 * @param conn
-	 */
-	public static void closeConnetion() {
-		Connection conn = CONNECTION_HOLDER.get();
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (SQLException e) {
-				LOGGER.error("close connection failure", e);
-				throw new RuntimeException(e);
-			} finally {
-				CONNECTION_HOLDER.remove();
-			}
-		}
 	}
 	
 	/**
@@ -97,9 +78,8 @@ public final class DatabaseHelper {
 		} catch (SQLException e) {
 			LOGGER.error("query entity list failure", e);
 			throw new RuntimeException(e);
-		} finally {
-			closeConnetion();
 		}
+		
 		return entityList;
 	}
 	
@@ -118,9 +98,7 @@ public final class DatabaseHelper {
 		} catch (SQLException e) {
 			LOGGER.error("query entity list failure", e);
 			throw new RuntimeException(e);
-		} finally {
-			closeConnetion();
-		}
+		} 
 		return entity;
 	}
 	
