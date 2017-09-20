@@ -1,50 +1,71 @@
 package org.arthur.myframe.service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import org.arthur.myframe.helper.DatabaseHelper;
 import org.arthur.myframe.model.Customer;
+import org.arthur.myframe.util.PropsUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class CustomerService {
+	
+	private static final Logger LOGGER  = LoggerFactory.getLogger(CustomerService.class);
+	
 	/**
-	 * »ñÈ¡¿Í»§ÁÐ±í
+	 * ï¿½ï¿½È¡ï¿½Í»ï¿½ï¿½Ð±ï¿½
 	 */
 	
 	public List<Customer> getCustomerList() {
-		return null;
+		String sql = "select * from customer";
+		List<Customer> customerList = DatabaseHelper.queryEntityList(Customer.class, sql);
+		return customerList;
 	}
 	/**
-	 * »ñÈ¡¿Í»§
+	 * ï¿½ï¿½È¡ï¿½Í»ï¿½
 	 * @return
 	 */
 	public Customer getCustomer(long id) {
-		
-		return null;
+		String sql = "select * from customer where id = ?";
+		Customer customerList = DatabaseHelper.queryEntity(Customer.class, sql, id);
+		return customerList;
 	}
 	/**
-	 * ´´½¨¿Í»§
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½
 	 * @param fieldMap
 	 * @return
 	 */
 	public boolean createCustomer(Map<String,Object> fieldMap) {
-		return false;
+		boolean result = DatabaseHelper.insertEntity(Customer.class, fieldMap);
+		return result;
 	}
 	/**
-	 * ¸üÐÂ¿Í»§
+	 * ï¿½ï¿½ï¿½Â¿Í»ï¿½
 	 * @param id
 	 * @param fieldMap
 	 * @return
 	 */
 	public boolean updateCustomer(long id, Map<String, Object> fieldMap) {
-		return false;
+		boolean result = DatabaseHelper.updateEntity(Customer.class, id, fieldMap);
+		return result;
 	}
 	/**
-	 * É¾³ý¿Í»§
+	 * É¾ï¿½ï¿½ï¿½Í»ï¿½
 	 * @param id
 	 * @return
 	 */
 	public boolean deleteCustomer(long id) {
-		return false;
+		boolean result = DatabaseHelper.deleteEntity(Customer.class, id);
+		return result;
 	}
 	
 }

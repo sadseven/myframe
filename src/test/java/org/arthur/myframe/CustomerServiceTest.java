@@ -13,7 +13,7 @@ import junit.framework.Assert;
 
 public class CustomerServiceTest {
 	/**
-	 * CustomerService µ¥Ôª²âÊÔ
+	 * CustomerService ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½
 	 */
 	private final CustomerService customerService;
 	
@@ -23,7 +23,7 @@ public class CustomerServiceTest {
 	
 	@Before
 	public void init() {
-		//TODO ³õÊ¼»¯Êý¾Ý¿â
+		//TODO ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
 		
 	}
 	
@@ -31,6 +31,9 @@ public class CustomerServiceTest {
 	public void getCustomerListTest() {
 		// TODO Auto-generated method stub
 		List<Customer> customerList = customerService.getCustomerList();
+		for (Customer customer : customerList) {
+			System.out.println(customer.toString());
+		}
 		Assert.assertEquals(2, customerList.size());
 	}
 	
@@ -38,8 +41,9 @@ public class CustomerServiceTest {
 	public void getCustomerTest() {
 		// TODO Auto-generated method stub
 		long id = 1;
-		Customer customerList = customerService.getCustomer(id);
-		Assert.assertNotNull(customerList);
+		Customer customer = customerService.getCustomer(id);
+		System.out.println(customer.toString());
+		Assert.assertNotNull(customer);
 	}
 	
 	@Test
@@ -50,26 +54,28 @@ public class CustomerServiceTest {
 		fieldMap.put("contact", "John");
 		fieldMap.put("telephone", "13512345678");
 		boolean result = customerService.createCustomer(fieldMap);
+		System.out.println(result);
 		Assert.assertTrue(result);
 	}
 	
 	@Test
 	public void updateCustomerTest() {
 		// TODO Auto-generated method stub
-		long id = 1;
+		long id = 3;
 		Map<String, Object> fieldMap = new HashMap<String, Object>();
-		fieldMap.put("name", "customer100");
-		fieldMap.put("contact", "John");
-		fieldMap.put("telephone", "13512345678");
+		fieldMap.put("email", "arthur@test.com");
+		fieldMap.put("name", "arthur");
 		boolean result = customerService.updateCustomer(id, fieldMap);
+		System.out.println(result);
 		Assert.assertTrue(result);
 	}
 	
 	@Test
 	public void deleteCustomerTest() {
 		// TODO Auto-generated method stub
-		long id = 1;
+		long id = 3;
 		boolean result = customerService.deleteCustomer(id);
+		System.out.println(result);
 		Assert.assertTrue(result);
 	}
 }

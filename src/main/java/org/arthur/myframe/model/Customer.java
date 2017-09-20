@@ -8,30 +8,30 @@ public class Customer {
 	private long id;
 	
 	/**
-	 * ¿Í»§Ãû³Æ
+	 * ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	private String name;
 	
 	/**
-	 * ÁªÏµÈË
+	 * ï¿½ï¿½Ïµï¿½ï¿½
 	 */
 	
 	private String contact;
 	
 	/**
-	 * µç»°ºÅÂë
+	 * ï¿½ç»°ï¿½ï¿½ï¿½ï¿½
 	 */
 	
 	private String telephone;
 	
 	/**
-	 * ÓÊÏäµØÖ·
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
 	 */
 	
 	private String email;
 	
 	/**
-	 * ±¸×¢
+	 * ï¿½ï¿½×¢
 	 */
 	private String remark;
 
@@ -81,6 +81,12 @@ public class Customer {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", name=" + name + ", contact=" + contact + ", telephone=" + telephone
+				+ ", email=" + email + ", remark=" + remark + "]";
 	}
 	
 	
